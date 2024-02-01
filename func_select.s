@@ -1,7 +1,7 @@
 /* Gideon Neeman 329924567 */
 .extern printf
 .extern scanf
-.section ,data
+.extern pstrlen
 .section .rodata
 choise_31:
     .string "first pstring length: %d, second pstring length :%d\n"
@@ -10,12 +10,11 @@ choise_33:
 choise_34:
     .string "text"
 invalid_opt:
-    .string "%d, string: %s\n"
+    .string "invalid option!\n"
 
 .section .text
 .globl run_func
 .type   run_func, @function
-
 run_func:
     pushq %rbp
     movq %rsp, %rbp     # enter
@@ -29,6 +28,13 @@ run_func:
     jmp invalid         # invalid option         
 
 opt_31:
+    movq %rsi, %rdi     # move first pstring to rdi 
+    call pstrlen        # call func for opt 31
+    movb %al, %dl       # first pstrlen
+    xorq %rax, %rax
+    movq $choise_31, %rdi
+    movq %r15, %rsi
+    call printf
     jmp exit
 opt_33:
     jmp exit
