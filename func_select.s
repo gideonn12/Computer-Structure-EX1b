@@ -30,10 +30,12 @@ run_func:
 opt_31:
     movq %rsi, %rdi     # move first pstring to rdi 
     call pstrlen        # call func for opt 31
-    movb %al, %dl       # first pstrlen
+    movq %rax, %rsi     # first pstrlen
+    movq %rdx, %rdi     # move second pstring to rdi
+    call pstrlen        # call func for opt 31
+    movq %rax, %rdx
     xorq %rax, %rax
     movq $choise_31, %rdi
-    movq %r15, %rsi
     call printf
     jmp exit
 opt_33:
