@@ -26,10 +26,14 @@ swapCase:
 
     cmpb $'a',(%rdi) # check if it is lower case
     jge  upperCase    # if it is lower case then change to upper
-    movb $'v',(%rdi) # change to lower case
+    movb (%rdi), %al
+    addb $0x20, %al
+    movb %al, (%rdi) # change to lower case
     jmp .next
 upperCase:
-    movb $'W',(%rdi) # change to upper case
+    movb (%rdi), %al
+    addb $-0x20, %al
+    movb %al, (%rdi) # change to upper case
     jmp .next
 
 .next:
