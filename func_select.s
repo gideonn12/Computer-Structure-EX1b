@@ -45,18 +45,26 @@ opt_33:
     movq %rsi, %rdi     # move first pstring to rdi 
     movq %rsi, %r11
     call pstrlen        # get length of first pstring
-    movq %rax, %r9      # set it in r9
+    movq %rax, %r14      # set it in r14
 
-    
+    movq %rdx, %r15     # move second pstring to r15
     movq %r11, %rdi
     call swapCase       # swap for first string
     movq $choise_33, %rdi
     xorq %rax, %rax
-    movq %r9, %rsi      # length of first pstring 
+    movq %r14, %rsi      # length of first pstring 
     movq %r11, %rdx     # string itself
     call printf
-
-
+    movq %r15, %rdi
+    call pstrlen
+    movq %rax, %r14      # set length of second pstring in r14
+    movq %r15, %rdi     
+    call swapCase       # swap for second string
+    movq $choise_33, %rdi
+    xorq %rax, %rax
+    movq %r14, %rsi      # length of second pstring
+    movq %r15, %rdx     # string itself
+    call printf
     jmp exit
 
 opt_34:
