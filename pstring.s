@@ -23,8 +23,11 @@ swapCase:
 .loop:
     cmpb $0x0,(%rdi)   # if the char is null nothing to change
     je exit
-
-    cmpb $'a',(%rdi) # check if it is lower case
+    cmpb $'A',(%rdi)    # check if maybe it is not letters
+    jl .next
+    cmpb $'z',(%rdi)    # check if it is not letters
+    jg .next    
+    cmpb $'a',(%rdi)     # check if it is lower case
     jge  upperCase    # if it is lower case then change to upper
     movb (%rdi), %al
     addb $0x20, %al
