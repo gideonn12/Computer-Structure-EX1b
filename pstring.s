@@ -17,17 +17,24 @@ pstrlen:
 swapCase:
     pushq %rbp      # callee conv. backup RBP and set RBP to Activation Frame
     movq %rsp, %rbp
+    incq %rdi      
+    jmp .loop
 
-    cmpb $0,1(%rdi)   # if the char is null nothing to change
+.loop:
+    cmpb $0x0,(%rdi)   # if the char is null nothing to change
     je exit
 
-    cmpb $'a',1(%rdi) # check if it is lower case
+    cmpb $'a',(%rdi) # check if it is lower case
     jge  upperCase    # if it is lower case then change to upper
-    movb $'v',1(%rdi) # change to lower case
-    jmp exit
+    movb $'v',(%rdi) # change to lower case
+    jmp .next
 upperCase:
-    movb $'W',1(%rdi) # change to upper case
-    jmp exit
+    movb $'W',(%rdi) # change to upper case
+    jmp .next
+
+.next:
+    incq %rdi
+    jmp .loop
 exit:
     movq %rdi, %rax # return the pointer to the string
     movq %rbp, %rsp # callee conv. free activation frame and restore main frame
