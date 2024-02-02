@@ -2,6 +2,7 @@
 .extern printf
 .extern scanf
 .extern pstrlen
+.extern swapCase
 .section .rodata
 choise_31:
     .string "first pstring length: %d, second pstring length :%d\n"
@@ -38,7 +39,24 @@ opt_31:
     movq $choise_31, %rdi
     call printf
     jmp exit
+
+
 opt_33:
+    movq %rsi, %rdi     # move first pstring to rdi 
+    movq %rsi, %r11
+    call pstrlen        # get length of first pstring
+    movq %rax, %r9      # set it in r9
+
+    
+    movq %r11, %rdi
+    call swapCase       # swap for first string
+    movq $choise_33, %rdi
+    xorq %rax, %rax
+    movq %r9, %rsi      # length of first pstring 
+    movq %r11, %rdx     # string itself
+    call printf
+
+
     jmp exit
 
 opt_34:
