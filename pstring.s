@@ -47,3 +47,7 @@ exit:
     movq %rbp, %rsp # callee conv. free activation frame and restore main frame
     popq %rbp
     ret
+
+.globl pstrijcpy
+.type   pstrijcpy, @function
+pstrijcpy:
