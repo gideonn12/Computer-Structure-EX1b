@@ -7,7 +7,7 @@
 choise_31:
     .string "first pstring length: %d, second pstring length :%d\n"
 choise_33:
-    .string "length: %d,string: %s\n"
+    .string "length: %d, string: %s\n"
 choise_34:
     .string "%d %d"
 invalid_opt:
@@ -68,22 +68,46 @@ opt_33:
     jmp exit
 
 opt_34:
+    movq %rsi, %r15     # backup the pstrings
+    movq %rdx, %r10
+    movq %rsi, %rdi     # move first pstring to rdi
+    call pstrlen        # get length of first pstring
+    movq %rax, %r13
+    movq %rdx, %rdi     # move second pstring to rdi
+    call pstrlen        # get length of second pstring
+    movq %rax, %r14
     sub $16, %rsp
     movq $choise_34, %rdi
     leaq -16(%rbp), %rsi    # move first number to rsi
     leaq -12(%rbp), %rdx    # move second number to rdx
     xorq %rax, %rax
     call scanf
-    xorq %rax, %rax
-    movq $choise_34, %rdi
-    movq -16(%rbp), %rsi    # move first number to rsi
-    movq -12(%rbp), %rdx    # move second number to rdx
-    call printf
+
+    
+    cmp -12(%rbp), %r13   # next lines check if input indexes are valid
+    jl invalid_opt34
+    cmp -12(%rbp), %r14
+    jl invalid_opt34
+    cmp -16(%rbp), %r13
+    jl invalid_opt34
+    cmp -16(%rbp), %r14
+    jl invalid_opt34
+    #call pstrijcopy
     jmp exit
 
 invalid_opt34:
-    xorq %rax, %rax
+    xorq %rax, %rax    # print invalid option and the 2 strings without changes
     movq $invalid_opt, %rdi
+    call printf
+    xorq %rax, %rax
+    movq $choise_33, %rdi
+    movq %r13, %rsi
+    movq %r15, %rdx
+    call printf
+    xorq %rax, %rax
+    movq $choise_33, %rdi
+    movq %r14, %rsi
+    movq %r10, %rdx
     call printf
     jmp exit
 
