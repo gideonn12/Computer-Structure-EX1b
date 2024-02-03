@@ -81,6 +81,11 @@ opt_34:
     call printf
     jmp exit
 
+invalid_opt34:
+    xorq %rax, %rax
+    movq $invalid_opt, %rdi
+    call printf
+    jmp exit
 
 invalid:            # print invalid option
     xorq %rax, %rax
