@@ -9,7 +9,7 @@ choise_31:
 choise_33:
     .string "length: %d,string: %s\n"
 choise_34:
-    .string "text"
+    .string "%d %d\n"
 invalid_opt:
     .string "invalid option!\n"
 
@@ -68,7 +68,20 @@ opt_33:
     jmp exit
 
 opt_34:
+    sub $16, %rsp
+    movq $choise_34, %rdi
+    leaq -16(%rbp), %rsi    # move first number to rsi
+    leaq -12(%rbp), %rdx    # move second number to rdx
+    xorq %rax, %rax
+    call scanf
+    xorq %rax, %rax
+    movq $choise_34, %rdi
+    movq -16(%rbp), %rsi    # move first number to rsi
+    movq -12(%rbp), %rdx    # move second number to rdx
+    call printf
     jmp exit
+
+
 invalid:            # print invalid option
     xorq %rax, %rax
     movq  $invalid_opt, %rdi
