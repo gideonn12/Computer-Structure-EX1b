@@ -51,3 +51,4 @@ exit:
 .globl pstrijcpy
 .type   pstrijcpy, @function
 pstrijcpy:
+// dont forget to return the pointer to dst
