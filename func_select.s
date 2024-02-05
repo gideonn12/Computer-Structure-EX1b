@@ -2,10 +2,11 @@
 .extern printf
 .extern scanf
 .extern pstrlen
+.extern pstrijcpy
 .extern swapCase
 .section .rodata
 choise_31:
-    .string "first pstring length: %d, second pstring length :%d\n"
+    .string "first pstring length: %d, second pstring length : %d\n"
 choise_33:
     .string "length: %d, string: %s\n"
 choise_34:
@@ -24,7 +25,7 @@ run_func:
     je opt_31
     cmp $33, %rdi       # check if user wants option 33
     je opt_33
-    cmp $34, %rdi       # check if user wants option 33
+    cmp $34, %rdi       # check if user wants option 34
     je opt_34
     jmp invalid         # invalid option         
 
@@ -43,17 +44,17 @@ opt_31:
 
 opt_33:
     movq %rsi, %rdi     # move first pstring to rdi 
-    movq %rsi, %r11
+    movq %rsi, %r13
     call pstrlen        # get length of first pstring
     movq %rax, %r14      # set it in r14
 
     movq %rdx, %r15     # move second pstring to r15
-    movq %r11, %rdi
+    movq %r13, %rdi
     call swapCase       # swap for first string
     movq $choise_33, %rdi
     xorq %rax, %rax
     movq %r14, %rsi      # length of first pstring 
-    movq %r11, %rdx     # string itself
+    movq %r13, %rdx     # string itself
     call printf
     movq %r15, %rdi
     call pstrlen
@@ -69,10 +70,10 @@ opt_33:
 
 opt_34:
     movq %rsi, %r15     # backup the pstrings
-    movq %rdx, %r10
+    movq %rdx, %r12
     movq %rsi, %rdi     # move first pstring to rdi
     call pstrlen        # get length of first pstring
-    movq %rax, %r13
+1    movq %rax, %r13
     movq %rdx, %rdi     # move second pstring to rdi
     call pstrlen        # get length of second pstring
     movq %rax, %r14
@@ -82,18 +83,25 @@ opt_34:
     leaq -12(%rbp), %rdx    # move second number to rdx
     xorq %rax, %rax
     call scanf
-
+    movq -12(%rbp), %r11
+    # check cases
     
-    cmp -12(%rbp), %r13   # next lines check if input indexes are valid
-    jl invalid_opt34
-    cmp -12(%rbp), %r14
-    jl invalid_opt34
-    cmp -16(%rbp), %r13
-    jl invalid_opt34
-    cmp -16(%rbp), %r14
-    jl invalid_opt34
-    #call pstrijcopy
-    
+    movq %r15, %rdi
+    movq %r12, %rsi
+    movq -16(%rbp), %rdx
+    movq -12(%rbp), %rcx
+    call pstrijcpy
+    #print
+    movq $choise_33, %rdi
+    movq %r13, %rsi
+    movq %r15, %rdx
+    xorq %rax, %rax
+    call printf
+    movq $choise_33, %rdi
+    movq %r14, %rsi
+    movq %r12, %rdx
+    xorq %rax, %rax
+    call printf
     jmp exit
 
 invalid_opt34:
@@ -108,7 +116,7 @@ invalid_opt34:
     xorq %rax, %rax
     movq $choise_33, %rdi
     movq %r14, %rsi
-    movq %r10, %rdx
+    movq %r12, %rdx
     call printf
     jmp exit
 
