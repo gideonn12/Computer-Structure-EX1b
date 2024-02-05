@@ -93,6 +93,7 @@ opt_34:
     cmp -16(%rbp), %r14
     jl invalid_opt34
     #call pstrijcopy
+    
     jmp exit
 
 invalid_opt34:

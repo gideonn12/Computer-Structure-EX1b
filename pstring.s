@@ -17,6 +17,7 @@ pstrlen:
 swapCase:
     pushq %rbp      # callee conv. backup RBP and set RBP to Activation Frame
     movq %rsp, %rbp
+    movq %rdi, %r8 # save the pointer to the pstring
     incq %rdi      
     jmp .loop
 
@@ -43,7 +44,7 @@ upperCase:
     incq %rdi
     jmp .loop
 exit:
-    movq %rdi, %rax # return the pointer to the string
+    movq %r8, %rax # return the pointer to the string
     movq %rbp, %rsp # callee conv. free activation frame and restore main frame
     popq %rbp
     ret
