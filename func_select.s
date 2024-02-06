@@ -73,7 +73,7 @@ opt_34:
     movq %rdx, %r12
     movq %rsi, %rdi     # move first pstring to rdi
     call pstrlen        # get length of first pstring
-1    movq %rax, %r13
+    movq %rax, %r13
     movq %rdx, %rdi     # move second pstring to rdi
     call pstrlen        # get length of second pstring
     movq %rax, %r14
@@ -83,16 +83,20 @@ opt_34:
     leaq -12(%rbp), %rdx    # move second number to rdx
     xorq %rax, %rax
     call scanf
-    movq -12(%rbp), %r11
     # check cases
-    
     movq %r15, %rdi
     movq %r12, %rsi
-    movq -16(%rbp), %rdx
-    movq -12(%rbp), %rcx
+    movzbq -16(%rbp), %rdx
+    movzbq -12(%rbp), %rcx
+    cmpq %rdx, %rcx    # check if j>=i
+    jl invalid_opt34
+    cmpq %rcx, %r13   # check if j is in range
+    jl invalid_opt34
+    cmpq %rdx, %r14  # check if j is in range
+    jl invalid_opt34
     call pstrijcpy
     #print
-    movq $choise_33, %rdi
+    movq $choise_33, %rdi   # print the 2 strings with the changes
     movq %r13, %rsi
     movq %r15, %rdx
     xorq %rax, %rax

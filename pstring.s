@@ -1,4 +1,5 @@
 /* Gideon Neeman 329924567 */
+.extern printf
 .section .text
 .globl pstrlen
 .type   pstrlen, @function 
@@ -53,30 +54,27 @@ exit:
 pstrijcpy:
     pushq %rbp      # callee conv. backup RBP and set RBP to Activation Frame
     movq %rsp, %rbp
-    movq %rdi, %r8 # save the pointer to the pstring
-    incq %rdi
-    incq %rsi
-    add %rdx, %rdi
-    add %rdx, %rsi
+    movq %rdi, %r8      # save the pointer to the pstring
+    addq %rdx, %rsi     # move the pointer to index i-1
+    addq %rdx, %rdi     # move the pointer to index i-1
+    incq %rdi           # move the pointer to index i
+    incq %rsi           # move the pointer to index i
     jmp .looper
-
     
 .looper:
-    movb (%rsi), %al # copy the char from src to dst
-    movb %al, (%rdi)
-    incq %rdi
+    movb (%rsi), %al    # move the char from src do dest
+    movb %al,(%rdi)
     incq %rsi
-    jmp .next2
-
-.next2:
+    incq %rdi           # move the pointer to index i+1
     incq %rdx
-    cmpq %rdx, %rcx
-    jge .loop
-    jmp exit2
 
+.contr:
+    cmpq %rdx, %rcx     # check if i<=j
+    jl exit2
+    jmp .looper
 exit2:
-    movq %r8, %rax # return the pointer to the string
-    movq %rbp, %rsp # callee conv. free activation frame and restore main frame
+    movq %r8, %rax      # return the pointer to the string
+    movq %rbp, %rsp     # callee conv. free activation frame and restore main frame
     popq %rbp
     ret
 
