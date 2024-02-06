@@ -123,6 +123,14 @@ invalid_opt34:
     movq %r12, %rdx
     call printf
     jmp exit
+    
+    xorq %rax, %rax
+    movq $choise_34, %rdi
+    movq -16(%rbp), %rsi    # move first number to rsi
+    movq -12(%rbp), %rdx    # move second number to rdx
+    call printf
+    jmp exit
+
 
 invalid:            # print invalid option
     xorq %rax, %rax
