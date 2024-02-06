@@ -92,7 +92,7 @@ opt_34:
     jl invalid_opt34
     cmpq %rcx, %r13   # check if j is in range
     jl invalid_opt34
-    cmpq %rdx, %r14  # check if j is in range
+    cmpq %rcx, %r14  # check if j is in range
     jl invalid_opt34
     call pstrijcpy
     #print
